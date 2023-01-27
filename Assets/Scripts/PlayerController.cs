@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Video;
 using TMPro;
 
 public class PlayerController : MonoBehaviour
@@ -20,22 +21,30 @@ public class PlayerController : MonoBehaviour
 
 
 
-    private AudioSource _audioSource;
+    private AudioSource bruh;
+    private VideoPlayer nggyu;
+    public Material nggyu_material;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        _audioSource = GetComponent<AudioSource>();
-        if(_audioSource == null)
+        bruh = GetComponent<AudioSource>();
+        if(bruh == null)
         {
-            Debug.LogError("AudioSource not found!");
+            Debug.LogError("bruh not found!");
         }
 
         count = 0;
         SetCountText();
         winTextObject.gameObject.SetActive(false);
+
+        nggyu = GameObject.Find("Ground").GetComponent<VideoPlayer>();
+        if (nggyu == null)
+        {
+            Debug.LogError("nggyu not found!");
+        }
     }
 
     void OnMove(InputValue movementValue)
@@ -52,6 +61,8 @@ public class PlayerController : MonoBehaviour
         if(count >= collectables)
         {
             winTextObject.SetActive(true);
+            nggyu.Play();
+            gameObject.GetComponent<MeshRenderer>().material = nggyu_material;
         }
     }
 
@@ -66,7 +77,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PickUp"))
         {
-            _audioSource.Play();
+            bruh.Play();
             other.gameObject.SetActive(false);
             count++;
             SetCountText();
