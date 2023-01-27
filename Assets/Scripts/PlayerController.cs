@@ -21,12 +21,12 @@ public class PlayerController : MonoBehaviour
 
     private GameObject ground;
 
-    private Component[] audios;
+    private Component[] audios; //Holds all of the audios before they're assigned
     private AudioSource bruh;
     private AudioSource nice;
     private AudioSource amogus;
     private AudioSource wiisports;
-    private VideoPlayer nggyu; //Never Gonna Give You Up
+    private VideoPlayer never_gonna; //Never Gonna Give You Up
     public Material nggyu_material; //Rick Ball
 
     public GameObject prefab;
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         audios = GetComponents(typeof(AudioSource));
-        foreach(AudioSource audio in audios)
+        foreach(AudioSource audio in audios) //Sets each audio to it's variable
         {
             string name = audio.clip.ToString().Replace(" (UnityEngine.AudioClip)", "");
             if (name == "bruh")
@@ -79,17 +79,18 @@ public class PlayerController : MonoBehaviour
 
         //Get the VideoPlayer component
 
-        ground = GameObject.Find("Ground");
-        nggyu = ground.GetComponent<VideoPlayer>();
-        if (nggyu == null) //Makes sure the video exists
+        ground = GameObject.Find("Ground"); //also used later to set ground color, we set it here since we also need it to get the video variable working
+        never_gonna = ground.GetComponent<VideoPlayer>();
+        if (never_gonna == null) //Makes sure the video exists
         {
-            Debug.LogError("nggyu not found!");
+            Debug.LogError("never_gonna not found!");
         }
 
 
         //Generates the pickups, -1 because of Pacer
         for (var i = 0; i < collectables - 1; i++)
         {
+            //TODO: make parents work
             Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity);
         }
     }
@@ -101,18 +102,24 @@ public class PlayerController : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
     }
+    
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
 
         if(count >= collectables)
         {
+            //Gets the ground renderer
             var groundRender = ground.GetComponent<Renderer>();
 
             winTextObject.SetActive(true);
-            wiisports.Stop();
-            nggyu.Play(); //Plays Never Gonna Give You Up
+
+            wiisports.Stop(); //Stops the Wii Sports background music
+            never_gonna.Play(); //Plays Never Gonna Give You Up
+
+            //Switches the ground color to white to avoid putting a red filter over the video
             groundRender.material.SetColor("_Color", Color.white);
+
             //Switches the ball's material to the rick ball
             gameObject.GetComponent<MeshRenderer>().material = nggyu_material;
         }
@@ -130,7 +137,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("PickUp"))
         {
             int randomChance = Random.Range(1, 100);
-            if (randomChance == 42)
+            if (randomChance == 42) //1/100 chance of the amogus audio playing instead
             {
                 amogus.Play();
             }
@@ -138,7 +145,7 @@ public class PlayerController : MonoBehaviour
             {
                 nice.Play();
             }
-            else
+            else // Plays the default bruh if nothing else is found.
             {
                 bruh.Play();
             }
