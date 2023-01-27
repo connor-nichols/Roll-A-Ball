@@ -7,7 +7,7 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 0;
+    public float speed = 0; 
 
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
@@ -19,11 +19,14 @@ public class PlayerController : MonoBehaviour
 
     public float collectables = 0;
 
-
-
     private AudioSource bruh;
     private VideoPlayer nggyu;
     public Material nggyu_material;
+
+    public GameObject prefab;
+
+    private static readonly System.Random getrandom = new System.Random();
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +47,12 @@ public class PlayerController : MonoBehaviour
         if (nggyu == null)
         {
             Debug.LogError("nggyu not found!");
+        }
+
+        
+        for (var i = 0; i < collectables; i++)
+        {
+            Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity);
         }
     }
 
