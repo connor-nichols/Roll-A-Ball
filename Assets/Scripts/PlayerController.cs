@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 using UnityEngine.Video;
 using TMPro;
 
@@ -91,10 +91,10 @@ public class PlayerController : MonoBehaviour
         for (var i = 0; i < collectables - 1; i++)
         {
             //TODO: make parents work
-            Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity);
+            Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity, GameObject.FindGameObjectWithTag("PlayArea").transform);
         }
     }
-
+    /*
     void OnMove(InputValue movementValue)
     {
         Vector2 movementVector = movementValue.Get<Vector2>();
@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
     }
+    */
     
     void SetCountText()
     {
@@ -125,12 +126,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /*
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 
         rb.AddForce(movement * speed);
     }
+    */
 
     private void OnTriggerEnter(Collider other)
     {
