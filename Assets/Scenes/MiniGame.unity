@@ -940,7 +940,7 @@ MonoBehaviour:
   speed: 10
   countText: {fileID: 1548500288}
   winTextObject: {fileID: 1803792590}
-  collectables: 75
+  collectables: 10
   nggyu_material: {fileID: 2100000, guid: 0ec51b4ee594a2f4687d46fe9e003cb0, type: 2}
   prefab: {fileID: 5973121606783332590, guid: c28f51c6d0118f74198ebaab1b78f170, type: 3}
 --- !u!82 &1117068725

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
     public float collectables = 0;
 
+    private GameObject ground;
+
     private Component[] audios;
     private AudioSource bruh;
     private AudioSource nice;
@@ -76,7 +78,9 @@ public class PlayerController : MonoBehaviour
         winTextObject.gameObject.SetActive(false);
 
         //Get the VideoPlayer component
-        nggyu = GameObject.Find("Ground").GetComponent<VideoPlayer>();
+
+        ground = GameObject.Find("Ground");
+        nggyu = ground.GetComponent<VideoPlayer>();
         if (nggyu == null) //Makes sure the video exists
         {
             Debug.LogError("nggyu not found!");
@@ -103,9 +107,12 @@ public class PlayerController : MonoBehaviour
 
         if(count >= collectables)
         {
+            var groundRender = ground.GetComponent<Renderer>();
+
             winTextObject.SetActive(true);
             wiisports.Stop();
             nggyu.Play(); //Plays Never Gonna Give You Up
+            groundRender.material.SetColor("_Color", Color.white);
             //Switches the ball's material to the rick ball
             gameObject.GetComponent<MeshRenderer>().material = nggyu_material;
         }
