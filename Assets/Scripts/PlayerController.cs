@@ -19,13 +19,15 @@ public class PlayerController : MonoBehaviour
 
     public float collectables = 0;
 
+    private Component[] audios;
     private AudioSource bruh;
-    private VideoPlayer nggyu;
-    public Material nggyu_material;
+    private AudioSource nice;
+    private AudioSource amogus;
+    private AudioSource wiisports;
+    private VideoPlayer nggyu; //Never Gonna Give You Up
+    public Material nggyu_material; //Rick Ball
 
     public GameObject prefab;
-
-    private static readonly System.Random getrandom = new System.Random();
 
 
     // Start is called before the first frame update
@@ -33,24 +35,56 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        bruh = GetComponent<AudioSource>();
-        if(bruh == null)
+        audios = GetComponents(typeof(AudioSource));
+        foreach(AudioSource audio in audios)
+        {
+            string name = audio.clip.ToString().Replace(" (UnityEngine.AudioClip)", "");
+            if (name == "bruh")
+            {
+                bruh = audio;
+            }else if(name == "nice")
+            {
+                nice = audio;
+            }else if(name == "amogus")
+            {
+                amogus = audio;
+            }else if(name == "wiisports")
+            {
+                wiisports = audio;
+            }
+        }
+
+        if(bruh == null) //Makes sure the audio exists
         {
             Debug.LogError("bruh not found!");
+        }
+        if(nice == null)
+        {
+            Debug.LogError("nice not found!");
+        }
+        if(amogus == null)
+        {
+            Debug.LogError("amogus not found!");
+        }
+        if(wiisports == null)
+        {
+            Debug.LogError("wiisports not found!");
         }
 
         count = 0;
         SetCountText();
         winTextObject.gameObject.SetActive(false);
 
+        //Get the VideoPlayer component
         nggyu = GameObject.Find("Ground").GetComponent<VideoPlayer>();
-        if (nggyu == null)
+        if (nggyu == null) //Makes sure the video exists
         {
             Debug.LogError("nggyu not found!");
         }
 
-        
-        for (var i = 0; i < collectables; i++)
+
+        //Generates the pickups, -1 because of Pacer
+        for (var i = 0; i < collectables - 1; i++)
         {
             Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity);
         }
@@ -70,7 +104,9 @@ public class PlayerController : MonoBehaviour
         if(count >= collectables)
         {
             winTextObject.SetActive(true);
-            nggyu.Play();
+            wiisports.Stop();
+            nggyu.Play(); //Plays Never Gonna Give You Up
+            //Switches the ball's material to the rick ball
             gameObject.GetComponent<MeshRenderer>().material = nggyu_material;
         }
     }
@@ -86,7 +122,19 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PickUp"))
         {
-            bruh.Play();
+            int randomChance = Random.Range(1, 100);
+            if (randomChance == 42)
+            {
+                amogus.Play();
+            }
+            else if (count + 1 == 69) //plays the nice sound effect if count is 69
+            {
+                nice.Play();
+            }
+            else
+            {
+                bruh.Play();
+            }
             other.gameObject.SetActive(false);
             count++;
             SetCountText();
