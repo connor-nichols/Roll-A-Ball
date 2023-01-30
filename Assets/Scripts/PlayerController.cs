@@ -102,15 +102,6 @@ public class PlayerController : MonoBehaviour
             Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity, GameObject.FindGameObjectWithTag("PlayArea").transform);
         }
     }
-    /*
-    void OnMove(InputValue movementValue)
-    {
-        Vector2 movementVector = movementValue.Get<Vector2>();
-
-        movementX = movementVector.x;
-        movementY = movementVector.y;
-    }
-    */
     
     void SetCountText()
     {
@@ -133,15 +124,6 @@ public class PlayerController : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material = nggyu_material;
         }
     }
-
-    /*
-    void FixedUpdate()
-    {
-        Vector3 movement = new Vector3(movementX, 0.0f, movementY);
-
-        rb.AddForce(movement * speed);
-    }
-    */
 
     private void OnTriggerEnter(Collider other)
     {
