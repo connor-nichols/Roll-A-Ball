@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
 
     public GameObject prefab;
 
+    public bool Pacer;
+    private int pacer_mod = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +80,11 @@ public class PlayerController : MonoBehaviour
         SetCountText();
         winTextObject.gameObject.SetActive(false);
 
+        if (Pacer)
+        {
+            pacer_mod = 1;
+        }
+
         //Get the VideoPlayer component
 
         ground = GameObject.Find("Ground"); //also used later to set ground color, we set it here since we also need it to get the video variable working
@@ -88,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
 
         //Generates the pickups, -1 because of Pacer
-        for (var i = 0; i < collectables - 1; i++)
+        for (var i = 0; i < collectables - pacer_mod; i++)
         {
             //TODO: make parents work
             Instantiate(prefab, new Vector3(Random.Range(-9.5f, 9.5f), 1, Random.Range(-9.5f, 9.5f)), Quaternion.identity, GameObject.FindGameObjectWithTag("PlayArea").transform);
