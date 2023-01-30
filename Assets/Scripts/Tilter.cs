@@ -11,23 +11,9 @@ public class Tilter : MonoBehaviour
     private float movementX;
     private float movementY;
     private float smooth = 5.0f;
-    float tiltAngle = 60.0f;
+    float tiltAngle = 10.0f;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    /*
-    void OnMove(InputValue movementValue)
-    {
-        Vector2 movementVector = movementValue.Get<Vector2>();
-
-        movementX = movementVector.x;
-        movementY = movementVector.y;
-    }
-    */
 
     void Update()
     {
