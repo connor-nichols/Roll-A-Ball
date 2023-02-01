@@ -6,6 +6,9 @@ TagManager:
   tags:
   - PickUp
   - PlayArea
+  - projectile
+  - FxTemporaire
+  - PlayerHand
   layers:
   - Default
   - TransparentFX
@@ -38,7 +41,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Ignore
   m_SortingLayers:
   - name: Default
     uniqueID: 0
