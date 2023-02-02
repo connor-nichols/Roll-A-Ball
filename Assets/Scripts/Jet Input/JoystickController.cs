@@ -17,10 +17,10 @@ namespace Valve.VR.InteractionSystem
 		public float roll = 0;
 		public GameObject topOfJoystick;
 
-		public Transform xPos;
-		public Transform xNeg;
-		public Transform zPos;
-		public Transform zNeg;
+		//public Transform xPos;
+		//public Transform xNeg;
+		//public Transform zPos;
+		//public Transform zNeg;
 		public LinearMapping linearMapping;
 		public bool repositionGameObject = true;
 		public bool maintainMomemntum = true;
@@ -68,28 +68,28 @@ namespace Valve.VR.InteractionSystem
 		{
 			GrabTypes startingGrabType = hand.GetGrabStarting();
 
-			//if (interactable.attachedToHand == null && startingGrabType != GrabTypes.None)
-			//{
+			if (interactable.attachedToHand == null && startingGrabType != GrabTypes.None)
+			{
 			//	initialMappingOffset = linearMapping.value - CalculateLinearMapping(hand.transform);
 			//	sampleCount = 0;
 			//	mappingChangeRate = 0.0f;
 
-			//	hand.AttachObject(gameObject, startingGrabType, attachmentFlags);
-			//}
+				hand.AttachObject(gameObject, startingGrabType, attachmentFlags);
+			}
 		}
 
 		protected virtual void HandAttachedUpdate(Hand hand)
 		{
-			//UpdateLinearMapping(hand.gameObject.transform);
+			UpdateLinearMapping(hand.gameObject.transform);
 
-			//if (hand.IsGrabEnding(this.gameObject))
-			//{
-			//	hand.DetachObject(gameObject);
-			//}
+			if (hand.IsGrabEnding(this.gameObject))
+			{
+				hand.DetachObject(gameObject);
+			}
 			Debug.Log("Hand attached");
 			
-
-			topOfJoystick.transform.LookAt(hand.transform.position, transform.up);
+			//Debug.Log("hand pos: " + hand.gameObject.transform.position);
+			transform.LookAt(hand.gameObject.transform.position, transform.up);
 			
 
 		}
@@ -117,43 +117,44 @@ namespace Valve.VR.InteractionSystem
 
 		protected void UpdateLinearMapping(Transform updateTransform)
 		{
-			prevMapping = linearMapping.value;
-			linearMapping.value = Mathf.Clamp01(initialMappingOffset + CalculateLinearMapping(updateTransform));
-
-			mappingChangeSamples[sampleCount % mappingChangeSamples.Length] = (1.0f / Time.deltaTime) * (linearMapping.value - prevMapping);
-			sampleCount++;
-
-			if (repositionGameObject)
-			{
-				transform.position = Vector3.Lerp(xPos.position, xNeg.position, linearMapping.value);
-			}
+			//prevMapping = linearMapping.value;
+			//linearMapping.value = Mathf.Clamp01(initialMappingOffset + CalculateLinearMapping(updateTransform));
+//
+			//mappingChangeSamples[sampleCount % mappingChangeSamples.Length] = (1.0f / Time.deltaTime) * (linearMapping.value - prevMapping);
+			//sampleCount++;
+//
+			//if (repositionGameObject)
+			//{
+			//	transform.position = Vector3.Lerp(xPos.position, xNeg.position, linearMapping.value);
+			//}
 		}
 
-		protected float CalculateLinearMapping(Transform updateTransform)
-		{
-			Vector3 direction = xNeg.position - xPos.position;
-			float length = direction.magnitude;
-			direction.Normalize();
-
-			Vector3 displacement = updateTransform.position - xPos.position;
-
-			return Vector3.Dot(displacement, direction) / length;
-		}
+		//protected float CalculateLinearMapping(Transform updateTransform)
+		//{
+			//Vector3 direction = xNeg.position - xPos.position;
+			//float length = direction.magnitude;
+			//direction.Normalize();
+//
+			//Vector3 displacement = updateTransform.position - xPos.position;
+//
+			//return Vector3.Dot(displacement, direction) / length;
+		//}
 
 
 		protected virtual void Update()
 		{
-			if (maintainMomemntum && mappingChangeRate != 0.0f)
-			{
-				//Dampen the mapping change rate and apply it to the mapping
-				mappingChangeRate = Mathf.Lerp(mappingChangeRate, 0.0f, momemtumDampenRate * Time.deltaTime);
-				linearMapping.value = Mathf.Clamp01(linearMapping.value + (mappingChangeRate * Time.deltaTime));
+			//if (maintainMomemntum && mappingChangeRate != 0.0f)
+			//{
+			//	//Dampen the mapping change rate and apply it to the mapping
+			//	mappingChangeRate = Mathf.Lerp(mappingChangeRate, 0.0f, momemtumDampenRate * Time.deltaTime);
+			//	linearMapping.value = Mathf.Clamp01(linearMapping.value + (mappingChangeRate * Time.deltaTime));
 
-				if (repositionGameObject)
-				{
-					transform.position = Vector3.Lerp(xPos.position, xNeg.position, linearMapping.value);
-				}
-			}
+			//	if (repositionGameObject)
+			//	{
+			//		Debug.Log("repositioning");
+			//		transform.position = Vector3.Lerp(xPos.position, xNeg.position, linearMapping.value);
+			//	}
+			//}
 		}
 	}
 }
