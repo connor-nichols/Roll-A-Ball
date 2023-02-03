@@ -86,10 +86,14 @@ namespace Valve.VR.InteractionSystem
 			{
 				hand.DetachObject(gameObject);
 			}
-			Debug.Log("Hand attached");
-			
+			Debug.Log("hand pos: " + hand.gameObject.transform.position);
+			Debug.Log("ball pos: " + topOfJoystick.transform.position);
+
+			Vector3 handPos = hand.gameObject.transform.position;
+			Vector3 newPos = new Vector3(handPos.x, handPos.y, handPos.z);
+
 			//Debug.Log("hand pos: " + hand.gameObject.transform.position);
-			transform.LookAt(hand.gameObject.transform.position, transform.up);
+			topOfJoystick.transform.LookAt(handPos, transform.up);
 			
 
 		}
